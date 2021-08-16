@@ -4,7 +4,7 @@ package com.aguo.leetcode.six.listnode;
 import com.aguo.leetcode.threeday.sum.ListNode;
 import org.junit.Test;
 
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author Code Fruit
@@ -204,4 +204,112 @@ public class KthFromEnd {
         digits[digits.length - 2] = (digits[digits.length - 1] + 1) / 10;
         return null;
     }
+
+    public static int[] hebing(int[] a,int[] b){
+        /*if (a.length <= 0) return b;
+        if (b.length <= 0) return a;
+        int[] c = new int[a.length + b.length];
+        if (a[0] > b[b.length - 1] ) {
+            for (int i = 0; i < c.length; i++) {
+                if (i < a.length){
+                    c[i] = a[i];
+                }else {
+                    c[i] = b[i - a.length];
+                }
+            }
+            return c;
+        }else if (b[0] > a[a.length - 1]){
+            for (int i = 0; i < c.length; i++) {
+                if (i < b.length){
+                    c[i] = b[i];
+                }else {
+                    c[i] = a[i - b.length];
+                }
+            }
+            return c;
+        }*/
+        int[] c = new int[a.length + b.length];
+        int lefta = 0,leftb = 0,len = 0;
+        while (lefta < a.length && leftb < b.length){
+            if (a[lefta] < b[leftb]){
+                c[len++] = a[lefta++];
+            }else{
+                c[len++] = b[leftb++];
+            }
+        }
+
+        while (lefta < a.length){
+            c[len++] = a[lefta++];
+        }
+        while (leftb < b.length){
+            c[len++] = b[leftb++];
+        }
+
+        return c;
+    }
+
+    public static void main(String[] args) {
+        int[] a = {1,3,5};
+        int[] b = {2,4,6,8};
+        int[] hebing = hebing(a, b);
+        for (int i : hebing) {
+            System.out.println(i);
+        }
+    }
+
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int[] nums = new int[m + n];
+        int lefta = 0,leftb = 0,len = 0;
+        while (lefta < nums1.length && leftb < nums2.length){
+            if (nums1[lefta] < nums2[leftb]){
+                nums[len++] = nums1[lefta++];
+            }else{
+                nums[len++] = nums2[leftb++];
+            }
+        }
+
+        while (lefta < nums1.length){
+            nums[len++] = nums1[lefta++];
+        }
+        while (leftb < nums2.length){
+            nums[len++] = nums2[leftb++];
+        }
+        for (int i = 0; i < nums1.length; i++) {
+            nums1[i] = nums[i];
+        }
+    }
+
+    @Test
+    public void testn(){
+        permute(new int[]{1,2,3});
+        Date date=new Date();
+        System.out.printf("%tD%n",date);
+    }
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> numLists = new ArrayList<>();
+        List<Integer> numList = new ArrayList<>();
+        for (int num : nums) {
+            numList.add(num);
+        }
+
+        permute(numLists,numList,0);
+        System.out.println(numLists);
+        return numLists;
+    }
+
+    public void permute(List<List<Integer>> numLists,List<Integer> numList,int start){
+        if (start == numList.size() - 1){
+            numLists.add(numList);
+        }
+        for (int i = start; i < numList.size(); i++) {
+            // 动态维护数组
+            Collections.swap(numList, start, i);
+            // 继续递归填下一个数
+            permute(numLists, numList, start + 1);
+            // 撤销操作
+            Collections.swap(numList, start, i);
+        }
+    }
+
+
 }
